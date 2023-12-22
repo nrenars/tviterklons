@@ -1,0 +1,26 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+ </head>
+ <body class="bg-dark">
+    <a href="{{ url_for('index') }}" class="text-success">Home page</a>
+
+    <h4>{{ post.author.username }}</h4>
+    <p class="text-warning">Created at: {{ post['created_at'] }}</p>
+    <h3>{{ post['post_text'] }}</h3>
+    <img src="{{ url_for('static', filename=post.image) }}" alt=""><br>
+    <a href="{{ url_for('like', post_id=post.id)}}" class="text-danger">Likes: {{ post.likes.count() }}</a>
+
+    <form action="{{ url_for('add_comment', post_id=post.id) }}" method="post" class="text-info">
+        {{ form.csrf_token }}
+        <p>Add your comment!</p>
+        {{ form.comment_text() }} <br>
+        <input type="submit" class="btn btn-success text-light">
+    </form>
+
+    <ul>
+        {% for comment in post.comments %}
+            <li>{{ comment.author.username }}: {{ comment.comment_text }}</li>
+        {% endfor %}
+    </ul>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>

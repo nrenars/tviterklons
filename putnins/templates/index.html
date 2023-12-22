@@ -1,0 +1,38 @@
+<head>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+   <style>
+      body {
+         display: flex;
+         justify-content: center;
+      }
+   </style>
+<body class="bg-dark font-italic" >
+
+   {% if session['logged_user'] %}
+   <a href="{{ url_for('new_post') }} " class="text-info ">Add new post</a>
+   <a href="{{ url_for('logout_user') }}" class="text-danger position-absolute top-0 end-0 p-3">Log out</a>
+   {% else %}
+   <a href="{{ url_for('login_user') }} " class="text-light ">Log in</a>
+   {% endif %}
+
+   {% with messages = get_flashed_messages() %}
+      {% if messages %}
+         <ul>
+         {% for message in messages %}
+            <li>{{ message }}</li>
+         {% endfor %}
+         </ul>
+      {% endif %}
+   {% endwith %}
+
+   <ul>
+      {% for post in posts %}
+      <li>
+         <a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.author.username }}: {{ post['post_text'] }}</a><br>
+         <a href="{{ url_for('like', post_id=post.id)}}">Likes: {{ post.likes.count() }}</a>
+      </li>
+      {% endfor %}
+   </ul>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
